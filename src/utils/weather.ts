@@ -1,10 +1,10 @@
 const { REACT_APP_MET_USER_AGENT } = process.env;
 
-export const fetchWeater = async () => {
+export const fetchWeater = async (lat: number, lon: number) => {
   if (!REACT_APP_MET_USER_AGENT)
     throw new Error("Missing environment variable");
 
-  const api = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=63.4468&lon=10.4219`;
+  const api = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`;
   const requestHeader = new Headers();
   // requestHeader.append('If-Modified-Since', weather.lastMod);
   requestHeader.append("TE", "trailers");

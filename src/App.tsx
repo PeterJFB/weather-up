@@ -11,7 +11,6 @@ function App() {
         <Route path="/" element={<WeatherDisplay />}></Route>
         <Route path="hello" element={"hi"} />
       </Routes>
-      <Spinner />
     </Flex>
   );
 }
