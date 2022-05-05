@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import { fetchWeater } from "../utils/weather";
+import { WeatherData } from "../types/weather";
 
 const WeatherDisplay = () => {
-  const [weatherContent, setWeatherContent] = useState<string>();
+  const [weatherData, setWeatherData] = useState<WeatherData>();
   const [hasGeolocationPermission, setHasGeolocationPermission] =
     useState(true);
 
@@ -13,8 +14,11 @@ const WeatherDisplay = () => {
       (position) => {
         const { latitude, longitude } = position.coords;
         (async () => {
-          const wc = JSON.stringify(await fetchWeater(latitude, longitude));
-          setWeatherContent(wc);
+          const { error, data } = await fetchWeater(latitude, longitude);
+
+          if (!error && data) {
+            setWeatherData(data);
+          }
         })();
       },
       (error) => {
@@ -25,12 +29,19 @@ const WeatherDisplay = () => {
         }
       }
     );
-  });
+  }, []);
 
   if (!hasGeolocationPermission)
     return <Flex>GIMMIE ACCESS TO YOUR LOCATION PLEASE</Flex>;
 
-  return <Flex>{weatherContent}</Flex>;
+  return (
+    <Flex>
+      <>
+        {weatherData?.byHour[0].instant.airTemperature}
+        {console.log(weatherData?.byHour)}
+      </>
+    </Flex>
+  );
 };
 
 export default WeatherDisplay;
