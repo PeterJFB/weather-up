@@ -1,16 +1,29 @@
 import React from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import WeatherDisplay from "./components/WeartherDisplay";
+import NavBar from "./components/NavBar";
+import ClothingSelection from "./components/ClothingSelection";
 
 function App() {
   return (
     <Flex w="full" h="100vh" justify="center" align="center" direction="column">
-      <Routes>
-        <Route path="/" element={<WeatherDisplay />}></Route>
-        <Route path="hello" element={"hi"} />
-      </Routes>
+      <Flex
+        flex={1}
+        w="full"
+        justify="center"
+        align="center"
+        maxH="100%"
+        overflowY="auto"
+        sx={{ "scrollbar-gutter": "stable" }}
+      >
+        <Routes>
+          <Route path="/clothing" element={<ClothingSelection />}></Route>
+          <Route path="/" element={<WeatherDisplay />} />
+        </Routes>
+      </Flex>
+      <NavBar />
     </Flex>
   );
 }

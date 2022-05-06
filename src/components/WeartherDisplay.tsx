@@ -1,10 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
 import { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import { fetchWeater } from "../utils/weather";
 import { WeatherData } from "../types/weather";
 
-const WeatherDisplay = () => {
+const WeatherDisplay: FC = () => {
   const [weatherData, setWeatherData] = useState<WeatherData>();
   const [hasGeolocationPermission, setHasGeolocationPermission] =
     useState(true);

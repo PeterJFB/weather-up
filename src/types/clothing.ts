@@ -10,6 +10,7 @@ export type Clothing = {
   maxTemp?: number;
   rainProof?: boolean;
   windProof?: boolean;
+  clearWeather?: boolean;
 };
 
 export type Preferences = {
