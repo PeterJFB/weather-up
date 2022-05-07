@@ -16,7 +16,7 @@ function App() {
         align="center"
         maxH="100%"
         overflowY="auto"
-        sx={{ "scrollbar-gutter": "stable" }}
+        sx={{ scrollbarGutter: "stable" }}
       >
         <Routes>
           <Route path="/clothing" element={<ClothingSelection />}></Route>
