@@ -1,28 +1,21 @@
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import React, { FC, useState } from "react";
-import { Clothing, ClothingType } from "../../types/clothing";
+import { Clothing, Preferences } from "../../types/clothing";
+import { getPreferences, updateClothing } from "../../utils/clothing";
 import ClothingOption from "./ClothingOption";
 import EditClothingModal from "./EditClothingModal";
 
 const ClothingSelection: FC = () => {
-  const clothingOptions: Clothing[] = [
-    {
-      name: "Sweater",
-      type: ClothingType.SWEATER,
-    },
-    {
-      name: "T-Shirt",
-      type: ClothingType.TOP,
-      minTemp: 20,
-    },
-  ];
-
+  const [clothingOptions, setClothingOptions] = useState<
+    Preferences["clothingOptions"]
+  >(getPreferences().clothingOptions);
   const [selectedClothing, setSelectedClothing] = useState<Clothing>();
   const editDisclosure = useDisclosure();
 
   const onEditSave = (prevClothing: Clothing, newClothing: Clothing) => {
-    console.log(newClothing);
+    updateClothing(prevClothing, newClothing);
     editDisclosure.onClose();
+    setClothingOptions(getPreferences().clothingOptions);
   };
 
   const editClothing = (clothing: Clothing) => {
@@ -34,11 +27,11 @@ const ClothingSelection: FC = () => {
 
   return (
     <Flex h="100%" w="full" direction="column">
-      {clothingOptions.map((clothing) => (
+      {Object.keys(clothingOptions).map((name) => (
         <ClothingOption
-          key={clothing.name}
-          clothing={clothing}
-          fireEdit={editClothing(clothing)}
+          key={name}
+          clothing={clothingOptions[name]}
+          fireEdit={editClothing(clothingOptions[name])}
         />
       ))}
       <EditClothingModal

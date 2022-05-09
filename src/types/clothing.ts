@@ -14,5 +14,5 @@ export type Clothing = {
 };
 
 export type Preferences = {
-  clothing: Clothing[];
+  clothingOptions: Record<string, Clothing>;
 };
