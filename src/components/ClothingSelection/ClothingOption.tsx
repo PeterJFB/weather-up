@@ -1,7 +1,8 @@
 import { HamburgerIcon, SettingsIcon } from "@chakra-ui/icons";
-import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
+import { Flex, Spacer, Text } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { Clothing } from "../../types/clothing";
+import { CLOTHING_MAX_TEMP, CLOTHING_MIN_TEMP } from "../../utils/clothing";
 
 type Props = {
   clothing: Clothing;
@@ -9,9 +10,15 @@ type Props = {
 };
 
 const ClothingOption: FC<Props> = ({
-  clothing: { name, minTemp, maxTemp },
+  clothing: { name, minTemp, maxTemp, type, rainproof, windproof },
   fireEdit,
 }) => {
+  const showMinTemp = () => {
+    return minTemp && minTemp > CLOTHING_MIN_TEMP;
+  };
+  const showMaxTemp = () => {
+    return maxTemp && maxTemp < CLOTHING_MAX_TEMP;
+  };
   return (
     <Flex
       align="center"
@@ -19,7 +26,16 @@ const ClothingOption: FC<Props> = ({
       borderBottom="solid 2px rgba(20, 20, 20, 30%)"
     >
       <HamburgerIcon w={7} h="full" m="0 15px" />
-      <Box w="80px" h="80px" bgColor="red" borderRadius="50%" />
+      <Flex
+        w="80px"
+        h="80px"
+        bgColor="cyan"
+        borderRadius="50%"
+        align="center"
+        justify="center"
+      >
+        {type}
+      </Flex>
       <Flex
         h="100%"
         direction="column"
@@ -28,9 +44,24 @@ const ClothingOption: FC<Props> = ({
         ml="10px"
       >
         <Text>{name}</Text>
-        <Flex></Flex>
-        {minTemp ? <Text fontSize="sm">min: {minTemp}°C</Text> : null}
-        {maxTemp ? <Text fontSize="sm">max: {maxTemp}°C</Text> : null}
+        <Text>
+          {rainproof ? "🌧️" : null}
+          {windproof ? "💨" : null}
+        </Text>
+        <Text fontSize="sm">
+          {showMinTemp() && showMaxTemp() ? (
+            <>
+              {minTemp}°C to {maxTemp}°C
+            </>
+          ) : (
+            <>
+              {showMinTemp() ? <>min {minTemp}°C</> : null}
+              {showMaxTemp() ? <>max {maxTemp}°C</> : null}
+            </>
+          )}
+
+          {}
+        </Text>
       </Flex>
       <Spacer />
       <SettingsIcon w={7} h="full" m="0 15px" onClick={fireEdit} />

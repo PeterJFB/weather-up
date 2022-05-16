@@ -36,8 +36,6 @@ export const fetchWeater = async (lat: number, lon: number) => {
 
   const data = await response.json();
 
-  console.log(data);
-
   return {
     error,
     data: normalizeWeatherData(data),

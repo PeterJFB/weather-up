@@ -8,8 +8,8 @@ export type Clothing = {
   type: ClothingType;
   minTemp?: number;
   maxTemp?: number;
-  rainProof?: boolean;
-  windProof?: boolean;
+  rainproof?: boolean;
+  windproof?: boolean;
   clearWeather?: boolean;
 };
 

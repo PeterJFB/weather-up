@@ -1,9 +1,8 @@
 import {
-  Button,
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   useDisclosure,
@@ -11,11 +10,12 @@ import {
 } from "@chakra-ui/react";
 import React, { FC, useMemo, useState } from "react";
 import { Clothing } from "../../types/clothing";
+import generateClothingForm from "./ClothingForm";
 
 type Props = {
   selectedClothing?: Clothing;
   disclosure: UseDisclosureProps;
-  onSave: (prevClothing: Clothing, newClothing: Clothing) => void;
+  onSave: Parameters<typeof generateClothingForm>[0];
 };
 
 const EditClothingModal: FC<Props> = ({
@@ -37,31 +37,23 @@ const EditClothingModal: FC<Props> = ({
 
   const { name } = newClothing;
 
+  const EditClothingForm = generateClothingForm(onSave);
+
   return (
     <Modal
       isCentered
       onClose={onClose}
       isOpen={isOpen}
       motionPreset="slideInBottom"
+      closeOnOverlayClick={false}
     >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{name}</ModalHeader>
-        <ModalBody>BODDY</ModalBody>
-        <ModalFooter>
-          <Button
-            colorScheme="blue"
-            mr={3}
-            onClick={() => {
-              onSave(selectedClothing, newClothing);
-            }}
-          >
-            Save
-          </Button>
-          <Button colorScheme="red" onClick={onClose}>
-            Cancel
-          </Button>
-        </ModalFooter>
+        <ModalCloseButton />
+        <ModalBody>
+          <EditClothingForm clothingOptions={{}} clothing={selectedClothing} />
+        </ModalBody>
       </ModalContent>
     </Modal>
   );
