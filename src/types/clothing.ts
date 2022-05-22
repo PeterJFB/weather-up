@@ -1,6 +1,6 @@
 export enum ClothingType {
-  SWEATER,
-  TOP,
+  SWEATER = "SWEATER",
+  TOP = "TOP",
 }
 
 export type Clothing = {
@@ -15,4 +15,8 @@ export type Clothing = {
 
 export type Preferences = {
   clothingOptions: Record<string, Clothing>;
+};
+
+export type Outfit = {
+  [key in ClothingType]: Clothing | undefined;
 };
