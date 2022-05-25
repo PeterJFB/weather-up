@@ -1,7 +1,7 @@
 // DATA FROM API
 
 export type RawWeatherResponse = {
-  units: unknown;
+  // units: unknown;
   properties: {
     timeseries: RawWeatherHourData[];
   };
@@ -36,10 +36,14 @@ export type RawWeatherSpanData = {
 // NORMALIZED DATA
 
 export type WeatherMeta = {
-  updatedAtTimeStamp: string;
+  lastModified: string;
+  expires: string;
+  lat: string;
+  lon: string;
 };
 
 export type WeatherData = {
+  meta: WeatherMeta;
   byHour: WeatherHourData[];
 };
 

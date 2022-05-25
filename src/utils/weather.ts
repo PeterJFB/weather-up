@@ -7,43 +7,78 @@ import {
 const { REACT_APP_MET_USER_AGENT } = process.env;
 
 export const fetchWeater = async (lat: number, lon: number) => {
+  const latString = lat.toFixed(4);
+  const lonString = lon.toFixed(4);
+
+  const savedWeatherData = getSavedWeatherData();
+
+  if (savedWeatherData) {
+    // Check if saved data exists on the given location
+    const { lat, lon } = savedWeatherData.meta;
+    if (lat === latString && lon === lonString) {
+      // Check if the data has not expired
+      if (new Date(savedWeatherData.meta.expires).getTime() > Date.now())
+        return {
+          error: null,
+          data: savedWeatherData,
+        };
+    }
+  }
+
   if (!REACT_APP_MET_USER_AGENT || !REACT_APP_MET_USER_AGENT.length)
     throw new Error("Missing environment variable");
 
-  const api = `https://api.met.no/weatherapi/locationforecast/2.0/compact.json?lat=${lat}&lon=${lon}`;
+  const api = `https://api.met.no/weatherapi/locationforecast/2.0/compact.json?lat=${latString}&lon=${lonString}`;
   const requestHeader = new Headers();
-  // requestHeader.append('If-Modified-Since', weather.lastMod);
+
   requestHeader.append("TE", "trailers");
   requestHeader.append("User-Agent", REACT_APP_MET_USER_AGENT);
-  /*
-    let options = {
-        //TODO: Make If-Modified-Since request work in order to not resend and save bandwith
-        headers: {'If-Modified-Since': 'Thu, 10 Sep 2020 09:02:53 GMT'}};
-    */
+  if (savedWeatherData?.meta) {
+    // TODO: Debug response such that the header is accepted
+    // requestHeader.append(
+    //   "If-Modified-Since",
+    //   savedWeatherData.meta.lastModified
+    // );
+  }
+
   const response = await fetch(api, {
     headers: requestHeader,
   }).catch((error) => {
     console.error("Error:", error);
+    return null;
   });
 
   if (!response) return { error: "Error in response", data: null };
+
+  if (response?.status === 304) {
+    // Data has not been changed since last save
+    return { error: null, data: savedWeatherData };
+  }
 
   if (response?.status !== 200) {
     console.error("Unexpected response:", response.status);
   }
 
-  const error = null;
+  const data = normalizeWeatherData(
+    await response.json(),
+    response.headers,
+    latString,
+    lonString
+  );
 
-  const data = await response.json();
+  saveWeatherData(data);
 
   return {
-    error,
-    data: normalizeWeatherData(data),
+    error: null,
+    data,
   };
 };
 
 export const normalizeWeatherData = (
-  rawData: RawWeatherResponse
+  rawData: RawWeatherResponse,
+  headers: Headers,
+  latString: string,
+  lonString: string
 ): WeatherData => {
   const byHour = rawData.properties.timeseries.map(({ time, data }) => {
     // Unpack values
@@ -81,7 +116,26 @@ export const normalizeWeatherData = (
     return hourData;
   });
 
+  const lastModified = headers.get("Last-Modified") || new Date().toUTCString();
+  const expires = headers.get("Expires") || new Date().toUTCString();
+
   return {
+    meta: { lastModified, expires, lat: latString, lon: lonString },
     byHour,
   };
+};
+
+// Storage
+const LS_WEATHER_DATA = "wu-weather-data";
+
+export const saveWeatherData = (weatherData: WeatherData) => {
+  localStorage.setItem(LS_WEATHER_DATA, JSON.stringify(weatherData));
+};
+
+const getSavedWeatherData = () => {
+  const weatherData = localStorage.getItem(LS_WEATHER_DATA);
+
+  if (!weatherData) return null;
+
+  return JSON.parse(weatherData) as WeatherData;
 };

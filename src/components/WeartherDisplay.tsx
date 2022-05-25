@@ -23,11 +23,8 @@ const WeatherDisplay: FC = () => {
       (position) => {
         const { latitude, longitude } = position.coords;
         (async () => {
-          // const { error, data } = await fetchWeater(latitude, longitude);
-          const { error, data } = {
-            error: null,
-            data: normalizeWeatherData(wData),
-          };
+          const { error, data } = await fetchWeater(latitude, longitude);
+
           if (!error && data) {
             setWeatherData(data);
           }
