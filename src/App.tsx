@@ -2,9 +2,9 @@ import React from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
-import WeatherDisplay from "./components/WeartherDisplay";
+import LandingPage from "./components/LandingPage";
 import NavBar from "./components/NavBar";
-import ClothingSelection from "./components/ClothingSelection";
+import ClothingEditor from "./components/ClothingEditor";
 
 function App() {
   return (
@@ -19,8 +19,8 @@ function App() {
         sx={{ scrollbarGutter: "stable" }}
       >
         <Routes>
-          <Route path="/clothing" element={<ClothingSelection />}></Route>
-          <Route path="/" element={<WeatherDisplay />} />
+          <Route path="/clothing" element={<ClothingEditor />}></Route>
+          <Route path="/" element={<LandingPage />} />
         </Routes>
       </Flex>
       <NavBar />

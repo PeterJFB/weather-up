@@ -118,9 +118,7 @@ const InnerClothingForm: FC<InnerClothingFormProps> = ({
         >
           <RangeSliderTrack
             bg="secondary"
-            bgGradient={
-              "linear(to-r, blue.200,blue.200, red.500, red.500, red.500)"
-            }
+            bgGradient="linear(to-r, blue.200,blue.200, red.500, red.500, red.500)"
           >
             <RangeSliderFilledTrack display="flex" flexDirection="row">
               <Flex

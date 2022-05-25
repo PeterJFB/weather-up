@@ -1,4 +1,4 @@
-import { ClothingFormValues } from "../components/ClothingSelection/ClothingForm";
+import { ClothingFormValues } from "../components/ClothingEditor/ClothingForm";
 import { Clothing, Preferences } from "../types/clothing";
 
 // Constants
