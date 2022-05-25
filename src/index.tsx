@@ -3,8 +3,25 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
+
+const WeatherUpTheme = extendTheme({
+  semanticTokens: {
+    colors: {
+      error: "red.500",
+      success: "green.500",
+      primary: {
+        default: "blue.500",
+        _dark: "blue.400",
+      },
+      secondary: {
+        default: "blue.50",
+        _dark: "blue.50",
+      },
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,7 +30,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ChakraProvider>
+      <ChakraProvider theme={WeatherUpTheme}>
         <App />
       </ChakraProvider>
     </BrowserRouter>

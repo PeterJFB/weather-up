@@ -1,4 +1,4 @@
-import { HamburgerIcon, SettingsIcon } from "@chakra-ui/icons";
+import { DragHandleIcon, SettingsIcon } from "@chakra-ui/icons";
 import { Flex, Spacer, Text } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { Clothing } from "../../types/clothing";
@@ -25,11 +25,11 @@ const ClothingOption: FC<Props> = ({
       h="100px"
       borderBottom="solid 2px rgba(20, 20, 20, 30%)"
     >
-      <HamburgerIcon w={7} h="full" m="0 15px" />
+      <DragHandleIcon w={7} h="full" m="0 15px" />
       <Flex
         w="80px"
         h="80px"
-        bgColor="cyan"
+        bgColor="secondary"
         borderRadius="50%"
         align="center"
         justify="center"

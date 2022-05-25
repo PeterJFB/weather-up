@@ -2,12 +2,12 @@ import { Endpoint } from "../../types/navigation";
 
 export const ENDPOINTS: Endpoint[] = [
   {
-    name: "lol",
+    name: "home",
     icon: "test.png",
     location: "/",
   },
   {
-    name: "test",
+    name: "clothing",
     icon: "test.png",
     location: "/clothing",
   },

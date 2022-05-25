@@ -9,7 +9,7 @@ const NavBar: FC<Props> = () => {
   return (
     <Flex
       justify="space-evenly"
-      boxShadow="0px -5px 10px rgba(50, 50, 50, 40%)"
+      boxShadow="0px -2px 5px rgba(50, 50, 50, 40%)"
       w="full"
     >
       {ENDPOINTS.map(({ name, icon, location }) => (

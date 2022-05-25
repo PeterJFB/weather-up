@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -54,14 +55,14 @@ const InnerClothingForm: FC<InnerClothingFormProps> = ({
   return (
     <Form>
       {/* Name */}
-      <FormControl isInvalid={!!(errors.name && touched.name)}>
+      <FormControl isInvalid={!!(errors.name && touched.name)} mt="15px">
         <FormLabel htmlFor="name">Name</FormLabel>
         <Input {...getFieldProps("name")} id="name" placeholder="name" />
         <FormErrorMessage>{errors.name}</FormErrorMessage>
       </FormControl>
 
       {/* Clothing Type */}
-      <FormControl isInvalid={!!(errors.type && touched.type)}>
+      <FormControl isInvalid={!!(errors.type && touched.type)} mt="15px">
         <FormLabel htmlFor="type">Type</FormLabel>
         <Select {...getFieldProps("type")} id="type">
           <option key={"none"} value={undefined}>
@@ -78,14 +79,18 @@ const InnerClothingForm: FC<InnerClothingFormProps> = ({
 
       {/* Rainproof / Windproof */}
       <FormControl>
-        <FormLabel htmlFor="rainproof">Rainproof 🌧️</FormLabel>
+        <FormLabel htmlFor="rainproof" mt="15px">
+          Rainproof 🌧️
+        </FormLabel>
         <Checkbox
           {...getFieldProps("rainproof")}
           defaultChecked={getFieldProps("rainproof").value}
           id="rainproof"
         />
         <FormErrorMessage>{errors.rainproof}</FormErrorMessage>
-        <FormLabel htmlFor="windproof">Windproof 💨</FormLabel>
+        <FormLabel htmlFor="windproof" mt="15px">
+          Windproof 💨
+        </FormLabel>
         <Checkbox
           {...getFieldProps("windproof")}
           defaultChecked={getFieldProps("windproof").value}
@@ -95,7 +100,10 @@ const InnerClothingForm: FC<InnerClothingFormProps> = ({
       </FormControl>
 
       {/* Temperature Range */}
-      <FormControl isInvalid={!!(errors.tempRange && touched.tempRange)}>
+      <FormControl
+        isInvalid={!!(errors.tempRange && touched.tempRange)}
+        mt="15px"
+      >
         <FormLabel htmlFor="tempRange">Temperature Range</FormLabel>
         <RangeSlider
           id="tempRange"
@@ -103,13 +111,29 @@ const InnerClothingForm: FC<InnerClothingFormProps> = ({
           max={CLOTHING_MAX_TEMP}
           step={1}
           {...getFieldProps("tempRange")}
-          onChange={(value) => {
+          onChange={(value: number[]) => {
             setFieldValue("tempRange", value);
             return;
           }}
         >
-          <RangeSliderTrack bg="red.100">
-            <RangeSliderFilledTrack bg="tomato" />
+          <RangeSliderTrack
+            bg="secondary"
+            bgGradient={
+              "linear(to-r, blue.200,blue.200, red.500, red.500, red.500)"
+            }
+          >
+            <RangeSliderFilledTrack display="flex" flexDirection="row">
+              <Flex
+                flex={-getFieldProps("tempRange").value[0]}
+                border="solid"
+                borderColor="primary"
+              />
+              <Flex
+                flex={getFieldProps("tempRange").value[1]}
+                border="solid"
+                borderColor="red.500"
+              />
+            </RangeSliderFilledTrack>
           </RangeSliderTrack>
           <Tooltip label={minRangeText()} hasArrow placement="top">
             <RangeSliderThumb boxSize={6} index={0}>
@@ -125,7 +149,13 @@ const InnerClothingForm: FC<InnerClothingFormProps> = ({
         <FormErrorMessage>{errors.tempRange}</FormErrorMessage>
       </FormControl>
 
-      <Button mt={4} colorScheme="teal" isLoading={isSubmitting} type="submit">
+      <Button
+        mt={4}
+        color="white"
+        bgColor="primary"
+        isLoading={isSubmitting}
+        type="submit"
+      >
         Save
       </Button>
     </Form>

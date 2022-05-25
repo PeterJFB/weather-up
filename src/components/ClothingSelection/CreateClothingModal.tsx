@@ -1,6 +1,7 @@
 import {
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
@@ -29,7 +30,9 @@ const CreateClothingModal: FC<Props> = ({ disclosure, onSave }) => {
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create Clothing</ModalHeader>
+        <ModalHeader>
+          Create Clothing <ModalCloseButton />
+        </ModalHeader>
         <ModalBody>
           <CreateClothingForm
             clothingOptions={{}}

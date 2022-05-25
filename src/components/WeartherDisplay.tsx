@@ -5,12 +5,11 @@ import { fetchWeater, normalizeWeatherData } from "../utils/weather";
 import { RawWeatherResponse, WeatherData } from "../types/weather";
 import { getSuitableOutfit } from "../core/WeatherUp";
 import { ClothingType } from "../types/clothing";
-import wData from "../utils/local/fixtures.json";
+import wData from "../utils/local/fixture.json";
 
 const WeatherDisplay: FC = () => {
-  const [weatherData, setWeatherData] = useState<WeatherData>(
-    wData as WeatherData
-  );
+  const [weatherData, setWeatherData] = useState<WeatherData>();
+  // wData as WeatherData
   const [hasGeolocationPermission, setHasGeolocationPermission] =
     useState(true);
 
@@ -19,26 +18,30 @@ const WeatherDisplay: FC = () => {
     [weatherData]
   );
 
-  // useEffect(() => {
-  //   navigator.geolocation.getCurrentPosition(
-  //     (position) => {
-  //       const { latitude, longitude } = position.coords;
-  //       (async () => {
-  //         const { error, data } = await fetchWeater(latitude, longitude);
-  //         if (!error && data) {
-  //           setWeatherData(data);
-  //         }
-  //       })();
-  //     },
-  //     (error) => {
-  //       if (error.PERMISSION_DENIED) {
-  //         setHasGeolocationPermission(false);
-  //       } else {
-  //         console.error("GeolocationError: ", error);
-  //       }
-  //     }
-  //   );
-  // }, []);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        (async () => {
+          // const { error, data } = await fetchWeater(latitude, longitude);
+          const { error, data } = {
+            error: null,
+            data: normalizeWeatherData(wData),
+          };
+          if (!error && data) {
+            setWeatherData(data);
+          }
+        })();
+      },
+      (error) => {
+        if (error.PERMISSION_DENIED) {
+          setHasGeolocationPermission(false);
+        } else {
+          console.error("GeolocationError: ", error);
+        }
+      }
+    );
+  }, []);
 
   if (!hasGeolocationPermission)
     return <Flex>GIMMIE ACCESS TO YOUR LOCATION PLEASE</Flex>;

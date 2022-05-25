@@ -1,5 +1,5 @@
 import { PlusSquareIcon } from "@chakra-ui/icons";
-import { Button, Flex, useDisclosure } from "@chakra-ui/react";
+import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import React, { ComponentProps, FC, useState } from "react";
 import { Clothing, Preferences } from "../../types/clothing";
 import {
@@ -59,7 +59,8 @@ const ClothingSelection: FC = () => {
         right="20px"
         onClick={createDisclosure.onOpen}
       >
-        <PlusSquareIcon mr="10px" /> Add clothing
+        <PlusSquareIcon mr="10px" w="20px" h="20px" />{" "}
+        <Text mb="-5px">Add clothing</Text>
       </Button>
       {Object.keys(clothingOptions).map((name) => (
         <ClothingOption
