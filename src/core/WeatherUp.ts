@@ -1,11 +1,11 @@
-import { Clothing, ClothingType, Outfit } from "../types/clothing";
+import { Outfit } from "../types/clothing";
 import { WeatherHourData } from "../types/weather";
 import { getPreferences } from "../utils/clothing";
 
 export const getSuitableOutfit = (hourData: WeatherHourData) => {
   const outfit: Outfit = {
     SWEATER: undefined,
-    TOP: undefined,
+    T_SHIRT: undefined,
   };
 
   const { clothingOptions } = getPreferences();

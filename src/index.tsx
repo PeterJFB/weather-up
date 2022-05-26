@@ -21,6 +21,14 @@ const WeatherUpTheme = extendTheme({
       },
     },
   },
+  fonts: {
+    // heading: `'Lato', sans-serif`,
+    // body: `'Lato', sans-serif`,
+    // heading: `'Nunito', sans-serif`,
+    // body: `'Nunito', sans-serif`,
+    heading: `'Spline Sans Mono', monospace`,
+    body: `'Spline Sans Mono', monospace`,
+  },
 });
 
 const root = ReactDOM.createRoot(

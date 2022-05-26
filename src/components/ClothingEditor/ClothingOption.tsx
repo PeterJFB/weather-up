@@ -1,15 +1,9 @@
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  DragHandleIcon,
-  SettingsIcon,
-} from "@chakra-ui/icons";
-import { Flex, Spacer, Text } from "@chakra-ui/react";
 import React, { FC } from "react";
+import { ChevronDownIcon, ChevronUpIcon, SettingsIcon } from "@chakra-ui/icons";
+import { Flex, Image, Spacer, Text } from "@chakra-ui/react";
 import { Clothing } from "../../types/clothing";
 import { CLOTHING_MAX_TEMP, CLOTHING_MIN_TEMP } from "../../utils/clothing";
+import { CLOTHING_MAP } from "../LandingPage/ClothingMap";
 
 type Props = {
   clothing: Clothing;
@@ -45,7 +39,7 @@ const ClothingOption: FC<Props> = ({
         align="center"
         justify="center"
       >
-        {type}
+        <Image src={CLOTHING_MAP[type].image} transform="scale(200%)" />
       </Flex>
       <Flex
         h="100%"

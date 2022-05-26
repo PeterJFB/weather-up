@@ -1,6 +1,7 @@
+import React, { FC, TransitionEventHandler } from "react";
 import { Box } from "@chakra-ui/react";
-import React, { FC, TransitionEventHandler, useEffect, useState } from "react";
 import { WeatherData } from "../../types/weather";
+import CloudGroup from "./CloudGroup";
 type Props = {
   weatherData?: WeatherData;
 };
@@ -41,45 +42,6 @@ const WeatherGradient: FC<GradientProps> = ({
     onTransitionEnd={onTransitionEnd}
   />
 );
-
-const Cloud = ({
-  onTransitionEnd,
-  show = false,
-}: {
-  onTransitionEnd: TransitionEventHandler<HTMLDivElement>;
-  show: boolean;
-}) => (
-  <Box
-    bgColor="gray.200"
-    w="50px"
-    h="50px"
-    transition="0.5s opacity, 0.5s margin"
-    opacity={show ? "100%" : "0%"}
-    mt={show ? "0px" : "10px"}
-    onTransitionEnd={onTransitionEnd}
-  />
-);
-
-const CloudGroup = () => {
-  const [clouds, setClouds] = useState([false, false, false]);
-
-  useEffect(() => {
-    setClouds([true, false, false]);
-  }, []);
-
-  const showCloud = (index: number) => () => {
-    const c = [...clouds];
-    c[index] = true;
-    setClouds(c);
-  };
-
-  return (
-    <Box>
-      <Cloud show={clouds[0]} onTransitionEnd={showCloud(1)} />
-      <Cloud show={clouds[1]} onTransitionEnd={showCloud(1)} />
-    </Box>
-  );
-};
 
 const WeatherBackground: FC<Props> = ({ weatherData }) => {
   return (

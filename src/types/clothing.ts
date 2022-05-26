@@ -1,6 +1,6 @@
 export enum ClothingType {
   SWEATER = "SWEATER",
-  TOP = "TOP",
+  T_SHIRT = "T_SHIRT",
 }
 
 export type Clothing = {
