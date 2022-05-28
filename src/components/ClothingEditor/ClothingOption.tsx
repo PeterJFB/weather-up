@@ -38,7 +38,15 @@ const ClothingOption: FC<Props> = ({
         borderRadius="50%"
         align="center"
         justify="center"
+        pos="relative"
       >
+        <Image
+          pos="absolute"
+          src="./outfit/person-blank.png"
+          maxH="100%"
+          opacity="75%"
+          transform="scale(200%)"
+        />
         <Image src={CLOTHING_MAP[type].image} transform="scale(200%)" />
       </Flex>
       <Flex

@@ -36,6 +36,7 @@ const WeatherGradient: FC<GradientProps> = ({
     top={0}
     left={0}
     bgGradient="linear(green.700, blue.900)"
+    // bgGradient="linear(blue.100, blue.400)"
     transition="1s opacity"
     opacity={weatherData ? "100%" : "0%"}
     zIndex={-1}
@@ -45,7 +46,15 @@ const WeatherGradient: FC<GradientProps> = ({
 
 const WeatherBackground: FC<Props> = ({ weatherData }) => {
   return (
-    <Box pos="absolute" top={0} left={0} w="full" h="100%" zIndex={-1}>
+    <Box
+      pos="absolute"
+      top={0}
+      left={0}
+      w="full"
+      h="100%"
+      zIndex={-1}
+      overflowX="hidden"
+    >
       <LoadingGradient weatherData={weatherData} />
       <WeatherGradient weatherData={weatherData} />
       {weatherData && <CloudGroup />}

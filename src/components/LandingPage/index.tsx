@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from "react";
+import React, { FC, PropsWithChildren, useMemo } from "react";
 import { useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import { fetchWeater } from "../../utils/weather";
@@ -9,6 +9,7 @@ import wData from "../../utils/local/fixture-normalized.json";
 import WeatherBackground from "../WeatherBackground";
 import OutfitShowcase from "./OutfitShowcase";
 import { CLOTHING_MAP } from "./ClothingMap";
+import Loading from "../Loading";
 
 const WeatherDisplay: FC = () => {
   const [weatherData, setWeatherData] = useState<WeatherData>();
@@ -30,7 +31,9 @@ const WeatherDisplay: FC = () => {
     //       // if (!error && data) {
     //       //   setWeatherData(data);
     //       // }
-    setWeatherData(wData);
+    setTimeout(() => {
+      setWeatherData(wData);
+    }, 1000);
     //     })();
     //   },
     //   (error) => {
@@ -46,6 +49,18 @@ const WeatherDisplay: FC = () => {
   if (!hasGeolocationPermission)
     return <Flex>GIMMIE ACCESS TO YOUR LOCATION PLEASE</Flex>;
 
+  const TextSegment: FC<PropsWithChildren<{ unit: string }>> = ({
+    children,
+    unit,
+  }) => (
+    <Flex w="100%">
+      <Text w="55%" textAlign="end" mr="5px">
+        {children}
+      </Text>
+      <Text w="45 %">{unit}</Text>
+    </Flex>
+  );
+
   return (
     <Flex flex={1} h="full" pos="relative" direction="column">
       <Flex
@@ -57,21 +72,34 @@ const WeatherDisplay: FC = () => {
         overflowY="hidden"
       >
         <WeatherBackground weatherData={weatherData} />
-        <Flex
-          direction="column"
-          flex={1}
-          h="250px"
-          bgColor="white"
-          p="10px"
-          mb="10px"
-        >
-          <Text>{weatherData?.byHour[0].instant.airTemperature} °C</Text>
-          <Text>{weatherData?.byHour[0].instant.windSpeed} m/s</Text>
-        </Flex>
-        {outfit && (
+        <Loading isLoading={!weatherData} />
+
+        {outfit ? (
           <>
+            <Flex
+              direction="column"
+              flex={1}
+              bgColor="white"
+              p="10px"
+              mb="10px"
+              borderRadius="0px 10px 10px 0px"
+            >
+              <TextSegment unit="°C">
+                {weatherData?.byHour[0].instant.airTemperature}
+              </TextSegment>
+              <TextSegment unit="m/s">
+                {weatherData?.byHour[0].instant.windSpeed}
+              </TextSegment>
+            </Flex>
             <OutfitShowcase outfit={outfit} />
-            <Flex flex={1} bgColor="white" h="250px" p="10px" mb="10px">
+            <Flex
+              flex={1}
+              direction="column"
+              bgColor="white"
+              p="10px"
+              mb="10px"
+              borderRadius="10px 0px 0px 10px"
+            >
               {(Object.keys(ClothingType) as (keyof typeof ClothingType)[]).map(
                 (c) => {
                   if (!outfit[c]) return null;
@@ -80,7 +108,7 @@ const WeatherDisplay: FC = () => {
               )}
             </Flex>
           </>
-        )}
+        ) : null}
       </Flex>
       <Flex transition="2s flex" flex={weatherData ? 1 : 0} zIndex={100} />
     </Flex>

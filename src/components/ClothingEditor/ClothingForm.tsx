@@ -1,3 +1,4 @@
+import React, { FC } from "react";
 import {
   Box,
   Button,
@@ -15,7 +16,6 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { Form, FormikErrors, FormikProps, withFormik } from "formik";
-import React, { FC } from "react";
 import { Clothing, ClothingType } from "../../types/clothing";
 import { CLOTHING_MAX_TEMP, CLOTHING_MIN_TEMP } from "../../utils/clothing";
 
@@ -117,10 +117,14 @@ const InnerClothingForm: FC<InnerClothingFormProps> = ({
           }}
         >
           <RangeSliderTrack
-            bg="secondary"
+            bg="none"
             bgGradient="linear(to-r, blue.200,blue.200, red.500, red.500, red.500)"
           >
-            <RangeSliderFilledTrack display="flex" flexDirection="row">
+            <RangeSliderFilledTrack
+              display="flex"
+              flexDirection="row"
+              bg="none"
+            >
               <Flex
                 flex={-getFieldProps("tempRange").value[0]}
                 border="solid"

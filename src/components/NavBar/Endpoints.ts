@@ -2,13 +2,13 @@ import { Endpoint } from "../../types/navigation";
 
 export const ENDPOINTS: Endpoint[] = [
   {
-    name: "home",
-    icon: "test.png",
+    name: "dashboard",
+    icon: "./home",
     location: "/",
   },
   {
-    name: "clothing",
-    icon: "test.png",
+    name: "edit clothing",
+    icon: "./shirt",
     location: "/clothing",
   },
 ];

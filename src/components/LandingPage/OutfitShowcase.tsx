@@ -13,11 +13,14 @@ const OutfitShowcase: FC<Props> = ({ outfit }) => {
       src={src}
       maxW="100%"
       minW="100%"
+      maxH="100%"
       pos="absolute"
+      bottom={0}
       transformOrigin="center"
       transform="scale(200%)"
+      fit="contain"
       zIndex={zIndex}
-      filter="drop-shadow(0 3px 2px rgba(0, 0, 0, 0.4))"
+      filter="drop-shadow(0 2px 2px rgba(50, 50, 70, 0.2))"
     />
   );
 
@@ -25,6 +28,7 @@ const OutfitShowcase: FC<Props> = ({ outfit }) => {
     <Flex
       w="50%"
       h="fit-content"
+      maxH="50%"
       pos="relative"
       filter="drop-shadow(0 10px 12px rgba(0, 0, 0, 0.4))"
     >

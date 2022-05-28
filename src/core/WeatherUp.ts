@@ -6,6 +6,9 @@ export const getSuitableOutfit = (hourData: WeatherHourData) => {
   const outfit: Outfit = {
     SWEATER: undefined,
     T_SHIRT: undefined,
+    SHORTS: undefined,
+    JACKET: undefined,
+    SHOES: undefined,
   };
 
   const { clothingOptions } = getPreferences();
