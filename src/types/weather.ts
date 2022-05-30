@@ -48,7 +48,7 @@ export type WeatherData = {
 };
 
 export type WeatherHourData = {
-  time: string | Date;
+  time: Date;
   instant: {
     airPressureAtSeaLevel: number;
     airTemperature: number;

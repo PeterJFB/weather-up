@@ -1,15 +1,16 @@
 import React, { FC, PropsWithChildren, useMemo } from "react";
 import { useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/react";
-import { fetchWeater } from "../../utils/weather";
+import { fetchWeater, normalizeWeatherData } from "../../utils/weather";
 import { WeatherData } from "../../types/weather";
 import { getSuitableOutfit } from "../../core/WeatherUp";
 import { ClothingType } from "../../types/clothing";
-import wData from "../../utils/local/fixture-normalized.json";
+import wData from "../../utils/local/fixture-raw.json";
 import WeatherBackground from "../WeatherBackground";
 import OutfitShowcase from "./OutfitShowcase";
 import { CLOTHING_MAP } from "./ClothingMap";
 import Loading from "../Loading";
+import Forecast from "../Forecast";
 
 const WeatherDisplay: FC = () => {
   const [weatherData, setWeatherData] = useState<WeatherData>();
@@ -32,7 +33,9 @@ const WeatherDisplay: FC = () => {
     //       //   setWeatherData(data);
     //       // }
     setTimeout(() => {
-      setWeatherData(wData);
+      setWeatherData(
+        normalizeWeatherData(wData, new Headers(), "40.333", "23.403")
+      );
     }, 1000);
     //     })();
     //   },
@@ -110,7 +113,18 @@ const WeatherDisplay: FC = () => {
           </>
         ) : null}
       </Flex>
-      <Flex transition="2s flex" flex={weatherData ? 1 : 0} zIndex={100} />
+      <Flex
+        transition="2s flex"
+        maxH="100%"
+        maxW="100%"
+        flex={weatherData ? 1 : 0}
+        zIndex={10}
+        overflowY="hidden"
+        justify="center"
+        align="center"
+      >
+        {weatherData && <Forecast weatherData={weatherData} />}
+      </Flex>
     </Flex>
   );
 };
