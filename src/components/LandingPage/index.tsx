@@ -2,7 +2,7 @@ import React, { FC, PropsWithChildren, useMemo } from "react";
 import { useEffect, useState } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import { fetchWeater, normalizeWeatherData } from "../../utils/weather";
-import { WeatherData } from "../../types/weather";
+import { WeatherData, WeatherHourData } from "../../types/weather";
 import { getSuitableOutfit } from "../../core/WeatherUp";
 import { ClothingType } from "../../types/clothing";
 import wData from "../../utils/local/fixture-raw.json";
@@ -18,9 +18,11 @@ const WeatherDisplay: FC = () => {
   const [hasGeolocationPermission, setHasGeolocationPermission] =
     useState(true);
 
+  const [hourData, setHourData] = useState<WeatherHourData>();
+
   const outfit = useMemo(
-    () => (weatherData ? getSuitableOutfit(weatherData.byHour[0]) : undefined),
-    [weatherData]
+    () => (hourData ? getSuitableOutfit(hourData) : undefined),
+    [hourData]
   );
 
   useEffect(() => {
@@ -49,6 +51,10 @@ const WeatherDisplay: FC = () => {
     // );
   }, []);
 
+  useEffect(() => {
+    if (weatherData) setHourData(weatherData.byHour[0]);
+  }, [weatherData]);
+
   if (!hasGeolocationPermission)
     return <Flex>GIMMIE ACCESS TO YOUR LOCATION PLEASE</Flex>;
 
@@ -74,7 +80,7 @@ const WeatherDisplay: FC = () => {
         pos="relative"
         overflowY="hidden"
       >
-        <WeatherBackground weatherData={weatherData} />
+        <WeatherBackground hourData={hourData} />
         <Loading isLoading={!weatherData} />
 
         {outfit ? (
@@ -84,14 +90,14 @@ const WeatherDisplay: FC = () => {
               flex={1}
               bgColor="white"
               p="10px"
-              mb="10px"
+              mb="150px"
               borderRadius="0px 10px 10px 0px"
             >
               <TextSegment unit="°C">
-                {weatherData?.byHour[0].instant.airTemperature}
+                {hourData?.instant.airTemperature}
               </TextSegment>
               <TextSegment unit="m/s">
-                {weatherData?.byHour[0].instant.windSpeed}
+                {hourData?.instant.windSpeed}
               </TextSegment>
             </Flex>
             <OutfitShowcase outfit={outfit} />
@@ -100,7 +106,7 @@ const WeatherDisplay: FC = () => {
               direction="column"
               bgColor="white"
               p="10px"
-              mb="10px"
+              mb="100px"
               borderRadius="10px 0px 0px 10px"
             >
               {(Object.keys(ClothingType) as (keyof typeof ClothingType)[]).map(
@@ -123,7 +129,13 @@ const WeatherDisplay: FC = () => {
         justify="center"
         align="center"
       >
-        {weatherData && <Forecast weatherData={weatherData} />}
+        {weatherData && (
+          <Forecast
+            weatherData={weatherData}
+            setHourData={setHourData}
+            hourTime={hourData?.time.getTime()}
+          />
+        )}
       </Flex>
     </Flex>
   );

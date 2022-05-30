@@ -1,5 +1,6 @@
 import {
   RawWeatherResponse,
+  SymbolCode,
   WeatherData,
   WeatherHourData,
 } from "../types/weather";
@@ -105,12 +106,12 @@ export const normalizeWeatherData = (
         windSpeed: wind_speed,
       },
       next1Hours: {
-        symbolCode: data.next_1_Hours?.summary.symbol_code,
-        percipitationAmount: data.next_1_Hours?.details?.percipitation_amount,
+        symbolCode: data.next_1_hours?.summary.symbol_code as SymbolCode,
+        percipitationAmount: data.next_1_hours?.details?.precipitation_amount,
       },
       next6Hours: {
-        symbolCode: data.next_6_Hours?.summary.symbol_code,
-        percipitationAmount: data.next_6_Hours?.details?.percipitation_amount,
+        symbolCode: data.next_6_hours?.summary.symbol_code as SymbolCode,
+        percipitationAmount: data.next_6_hours?.details?.precipitation_amount,
       },
     };
     return hourData;

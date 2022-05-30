@@ -19,17 +19,17 @@ export type RawWeatherHourData = {
         wind_speed: number;
       };
     };
-    next_1_Hours?: RawWeatherSpanData;
-    next_6_Hours?: RawWeatherSpanData;
+    next_1_hours?: RawWeatherSpanData;
+    next_6_hours?: RawWeatherSpanData;
   };
 };
 
 export type RawWeatherSpanData = {
   summary: {
-    symbol_code: SymbolCode;
+    symbol_code: SymbolCode | string;
   };
   details?: {
-    percipitation_amount?: number;
+    precipitation_amount: number;
   };
 };
 

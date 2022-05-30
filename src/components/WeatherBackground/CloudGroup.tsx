@@ -1,6 +1,7 @@
 import { Box, Image } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import React, { TransitionEventHandler, useEffect, useState } from "react";
+import React, { FC, TransitionEventHandler, useEffect, useState } from "react";
+import { WeatherHourData } from "../../types/weather";
 
 const hover = keyframes`
   from { transform: translateY(0px) translateX(-50%) scale(300%); }
@@ -30,17 +31,24 @@ const Cloud = ({
   />
 );
 
-const CloudGroup = () => {
+type Props = {
+  cloudAreaFraction: WeatherHourData["instant"]["cloudAreaFraction"];
+};
+
+const CloudGroup: FC<Props> = ({ cloudAreaFraction }) => {
   const [clouds, setClouds] = useState<(string[] | undefined)[]>([
     undefined,
     undefined,
     undefined,
   ]);
 
+  if (cloudAreaFraction < 30) {
+    return null;
+  }
+
   const showCloud = (index: number) => () => {
     const c = [...clouds];
     c[index] = [`${Math.random() * 100}%`, `${Math.random() * 60 + 30}px`];
-    console.log(c);
     setClouds(c);
   };
 
@@ -50,10 +58,11 @@ const CloudGroup = () => {
 
   return (
     <Box pos="relative">
-      <>{console.log(clouds)}</>
       <Cloud position={clouds[0]} onTransitionEnd={showCloud(1)} />
-      <Cloud position={clouds[1]} onTransitionEnd={showCloud(2)} />
-      <Cloud position={clouds[2]} />
+      {cloudAreaFraction >= 60 && (
+        <Cloud position={clouds[1]} onTransitionEnd={showCloud(2)} />
+      )}
+      {cloudAreaFraction >= 80 && <Cloud position={clouds[2]} />}
     </Box>
   );
 };
