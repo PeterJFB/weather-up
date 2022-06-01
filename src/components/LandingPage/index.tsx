@@ -91,7 +91,12 @@ const WeatherDisplay: FC = () => {
               bgColor="white"
               p="10px"
               mb="150px"
+              transition="2s linear all"
               borderRadius="0px 10px 10px 0px"
+              backgroundBlendMode="multiply"
+              // bgGradient="linear(white, black)"
+              _hover={{ bgImage: "linear-gradient(black, black)" }}
+              bgImage="linear-gradient(white, black)"
             >
               <TextSegment unit="°C">
                 {hourData?.instant.airTemperature}

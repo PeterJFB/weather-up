@@ -21,6 +21,7 @@ const OutfitShowcase: FC<Props> = ({ outfit }) => {
       fit="contain"
       zIndex={zIndex}
       filter="drop-shadow(0 2px 2px rgba(50, 50, 70, 0.2))"
+      pointerEvents="none"
     />
   );
 
@@ -31,6 +32,7 @@ const OutfitShowcase: FC<Props> = ({ outfit }) => {
       maxH="50%"
       pos="relative"
       filter="drop-shadow(0 10px 12px rgba(0, 0, 0, 0.4))"
+      pointerEvents="none"
     >
       {(Object.keys(ClothingType) as (keyof typeof ClothingType)[]).map(
         (c, i) => {
@@ -48,6 +50,7 @@ const OutfitShowcase: FC<Props> = ({ outfit }) => {
         transformOrigin="center"
         transform="scale(200%)"
         zIndex={0}
+        pointerEvents="none"
       />
       {/* {JSON.stringify(outfit)} */}
     </Flex>
