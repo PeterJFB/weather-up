@@ -12,3 +12,11 @@ In the project directory, you can run:
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### `yarn prettier`
+
+Enforce styling of code.
+
+### `yarn eslint`
+
+Check for linting errors.
