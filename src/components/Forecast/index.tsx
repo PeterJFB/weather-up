@@ -187,7 +187,7 @@ const Forecast: FC<Props> = ({ weatherData, setHourData, hourTime }) => {
         <Flex w="25px" mr="4px" />
         {/* BEAUFORT-ARROWS */}
         <Flex flex="auto" justify="space-between">
-          {weatherData.byHour.slice(0, NUM_OF_HOURS).map((hourData, i) => (
+          {weatherData.byHour.slice(0, NUM_OF_HOURS).map((hourData) => (
             <BeaufortArrow
               key={hourData.time.getTime()}
               windSpeed={hourData.instant.windSpeed}

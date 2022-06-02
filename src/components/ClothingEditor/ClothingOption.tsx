@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { ChevronDownIcon, ChevronUpIcon, SettingsIcon } from "@chakra-ui/icons";
-import { Button, Flex, Image, Spacer, Text } from "@chakra-ui/react";
+import { Flex, Image, Spacer, Text } from "@chakra-ui/react";
 import { Clothing } from "../../types/clothing";
 import { CLOTHING_MAX_TEMP, CLOTHING_MIN_TEMP } from "../../utils/clothing";
 import { CLOTHING_MAP } from "../LandingPage/ClothingMap";

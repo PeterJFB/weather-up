@@ -1,4 +1,4 @@
-import { Flex, Image, Text } from "@chakra-ui/react";
+import { Flex, Image } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { ClothingType, Outfit } from "../../types/clothing";
 import { CLOTHING_MAP } from "./ClothingMap";
