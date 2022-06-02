@@ -1,7 +1,7 @@
 import { Flex, Text, useTheme } from "@chakra-ui/react";
-import React, { FC, PropsWithChildren } from "react";
+import React, { FC } from "react";
 import { WeatherData, WeatherHourData } from "../../types/weather";
-import BaufortArrow from "./BaufortArrow";
+import BeaufortArrow from "./BeaufortArrow";
 
 type Props = {
   weatherData: WeatherData;
@@ -13,6 +13,7 @@ type Props = {
 
 const Forecast: FC<Props> = ({ weatherData, setHourData, hourTime }) => {
   const theme = useTheme();
+
   const TEMPERATURES = [-6, 0, 6, 12, 18, 24, 30];
   const TEMP_MAX = TEMPERATURES[TEMPERATURES.length - 1];
   const PERCIPITATIONS = [0, 2, 4, 6, 8, 10, 12];
@@ -52,6 +53,7 @@ const Forecast: FC<Props> = ({ weatherData, setHourData, hourTime }) => {
     } ${next * SPACING_Y}, ${i * SPACING_X} ${next * SPACING_Y},`;
   }
 
+  // Rain using rects
   const percipitationRects = [];
 
   for (let i = 0; i < NUM_OF_HOURS; i++) {
@@ -79,6 +81,7 @@ const Forecast: FC<Props> = ({ weatherData, setHourData, hourTime }) => {
     );
   }
 
+  // Place lines and rect in svg
   const graph = (
     <svg
       version="1.1" // Necessary?
@@ -129,9 +132,9 @@ const Forecast: FC<Props> = ({ weatherData, setHourData, hourTime }) => {
   return (
     <Flex direction="column" w="fit-content" h="fit-content" mt="-5px">
       <Flex w="100%">
+        {/* HOUR-TICKS */}
         <Flex w="25px" mr="4px" pointerEvents="none" />
         <Flex flex="auto" justify="space-between">
-          {/* HOUR-TICKS */}
           {weatherData.byHour.slice(0, NUM_OF_HOURS).map((hourData, i) => (
             <HourTickText index={i} key={hourData.time.getTime()} />
           ))}
@@ -162,6 +165,7 @@ const Forecast: FC<Props> = ({ weatherData, setHourData, hourTime }) => {
           {graph}
         </Flex>
         <Flex direction="column" h="125px" justify="space-between">
+          {/* RAIN-TICKS */}
           <Text textAlign="right" h="18px" fontSize="xs" w="25px" mt="-9px" />
           {PERCIPITATIONS.slice(0, PERCIPITATIONS.length - 1)
             .reverse()
@@ -181,9 +185,10 @@ const Forecast: FC<Props> = ({ weatherData, setHourData, hourTime }) => {
       </Flex>
       <Flex w="100%">
         <Flex w="25px" mr="4px" />
+        {/* BEAUFORT-ARROWS */}
         <Flex flex="auto" justify="space-between">
           {weatherData.byHour.slice(0, NUM_OF_HOURS).map((hourData, i) => (
-            <BaufortArrow
+            <BeaufortArrow
               key={hourData.time.getTime()}
               windSpeed={hourData.instant.windSpeed}
               fromDirection={hourData.instant.windFromDirection}

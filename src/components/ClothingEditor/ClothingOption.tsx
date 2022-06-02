@@ -28,7 +28,7 @@ const ClothingOption: FC<Props> = ({
       h="100px"
       borderBottom="solid 2px rgba(20, 20, 20, 30%)"
     >
-      {/* <DragHandleIcon w={7} h="full" m="0 15px" /> */}
+      {/* <DragHandleIcon w={7} h="full" m="0 15px" />  */}
       <Flex direction="column" h="full" m="0 5px" justify="space-evenly">
         <ChevronUpIcon
           w={9}

@@ -52,7 +52,6 @@ const OutfitShowcase: FC<Props> = ({ outfit }) => {
         zIndex={0}
         pointerEvents="none"
       />
-      {/* {JSON.stringify(outfit)} */}
     </Flex>
   );
 };

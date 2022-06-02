@@ -52,8 +52,7 @@ export const updateClothing = (
 
   if (prevClothing?.name !== newClothing.name) {
     for (const clothing of preferences.clothingOptions)
-      if (clothing.name === newClothing.name)
-        return null;
+      if (clothing.name === newClothing.name) return null;
   }
 
   preferences.clothingOptions.unshift(newClothing);
@@ -87,5 +86,5 @@ export const moveClothingPriority = (i: number, direction: "UP" | "DOWN") => {
       preferences.clothingOptions[i]
     );
   }
-  savePreferences(preferences)
-}
+  savePreferences(preferences);
+};
