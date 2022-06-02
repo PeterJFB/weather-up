@@ -23,7 +23,7 @@ export const extractClothingFromForm = (
 const LS_PREFERENCES = "wu-preferences";
 
 const generatePreferences = () => {
-  const initalPreferences: Preferences = { clothingOptions: {} };
+  const initalPreferences: Preferences = { clothingOptions: [] };
   localStorage.setItem(LS_PREFERENCES, JSON.stringify(initalPreferences));
   return initalPreferences;
 };
@@ -49,15 +49,43 @@ export const updateClothing = (
   const preferences = getPreferences();
 
   // Prevent override of existing clothing
+
   if (prevClothing?.name !== newClothing.name) {
-    if (Object.keys(preferences.clothingOptions).includes(newClothing.name)) {
-      return null;
-    }
+    for (const clothing of preferences.clothingOptions)
+      if (clothing.name === newClothing.name)
+        return null;
   }
 
-  preferences.clothingOptions[newClothing.name] = newClothing;
+  preferences.clothingOptions.unshift(newClothing);
 
   savePreferences(preferences);
 
   return preferences.clothingOptions;
 };
+
+export const moveClothingPriority = (i: number, direction: "UP" | "DOWN") => {
+  const preferences = getPreferences();
+
+  if (direction === "UP") {
+    if (i === 0) return;
+
+    preferences.clothingOptions.splice(
+      i - 1,
+      2,
+      preferences.clothingOptions[i],
+      preferences.clothingOptions[i - 1]
+    );
+  }
+
+  if (direction === "DOWN") {
+    if (i === preferences.clothingOptions.length - 1) return;
+
+    preferences.clothingOptions.splice(
+      i,
+      2,
+      preferences.clothingOptions[i + 1],
+      preferences.clothingOptions[i]
+    );
+  }
+  savePreferences(preferences)
+}

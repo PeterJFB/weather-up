@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { ChevronDownIcon, ChevronUpIcon, SettingsIcon } from "@chakra-ui/icons";
-import { Flex, Image, Spacer, Text } from "@chakra-ui/react";
+import { Button, Flex, Image, Spacer, Text } from "@chakra-ui/react";
 import { Clothing } from "../../types/clothing";
 import { CLOTHING_MAX_TEMP, CLOTHING_MIN_TEMP } from "../../utils/clothing";
 import { CLOTHING_MAP } from "../LandingPage/ClothingMap";
@@ -8,11 +8,13 @@ import { CLOTHING_MAP } from "../LandingPage/ClothingMap";
 type Props = {
   clothing: Clothing;
   fireEdit: () => void;
+  move: (direction: "UP" | "DOWN") => void;
 };
 
 const ClothingOption: FC<Props> = ({
   clothing: { name, minTemp, maxTemp, type, rainproof, windproof },
   fireEdit,
+  move,
 }) => {
   const showMinTemp = () => {
     return minTemp && minTemp > CLOTHING_MIN_TEMP;
@@ -28,8 +30,20 @@ const ClothingOption: FC<Props> = ({
     >
       {/* <DragHandleIcon w={7} h="full" m="0 15px" /> */}
       <Flex direction="column" h="full" m="0 5px" justify="space-evenly">
-        <ChevronUpIcon w={9} h={9} />
-        <ChevronDownIcon w={9} h={9} />
+        <ChevronUpIcon
+          w={9}
+          h={9}
+          onClick={() => {
+            move("UP");
+          }}
+        />
+        <ChevronDownIcon
+          w={9}
+          h={9}
+          onClick={() => {
+            move("DOWN");
+          }}
+        />
       </Flex>
       <Flex
         w="80px"
@@ -46,8 +60,13 @@ const ClothingOption: FC<Props> = ({
           maxH="100%"
           opacity="75%"
           transform="scale(200%)"
+          pointerEvents="none"
         />
-        <Image src={CLOTHING_MAP[type].image} transform="scale(200%)" />
+        <Image
+          src={CLOTHING_MAP[type].image}
+          transform="scale(200%)"
+          pointerEvents="none"
+        />
       </Flex>
       <Flex
         h="100%"

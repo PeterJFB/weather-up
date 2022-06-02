@@ -98,6 +98,56 @@ const WeatherToggleGradient: FC<GradientProps> = ({
   );
 };
 
+type CelestialProps = {
+  hourData: WeatherHourData;
+};
+
+const Sun: FC<CelestialProps> = ({ hourData }) => {
+  const hour = hourData.time.getHours();
+  const isDayTime = 6 <= hour && hour <= 18;
+  return (
+    <Box
+      w="50px"
+      h="50px"
+      pos="absolute"
+      top={isDayTime ? `${(Math.abs(6 - (hour - 6)) / 6) * 10 + 5}%` : "30%"}
+      left={isDayTime ? `${((hour - 6) / 12) * 100}%` : "120%"}
+      opacity={isDayTime ? "100%" : "0%"}
+      transform="translateX(-50%)"
+      bgColor="yellow.200"
+      boxShadow="0px 0px 10px yellow"
+      borderRadius="50%"
+      transition="0.5s all, 0.5s opacity"
+      overflow="hidden"
+    />
+  );
+};
+
+const Moon: FC<CelestialProps> = ({ hourData }) => {
+  const hour = hourData.time.getHours();
+  const isNightTime = hour < 6 || 18 < hour;
+  return (
+    <Box
+      w="50px"
+      h="50px"
+      pos="absolute"
+      top={
+        isNightTime
+          ? `${(Math.abs(6 - (((hour + 12 - 7) % 12) - 6)) / 6) * 10 + 5}%`
+          : "30%"
+      }
+      left={isNightTime ? `${(((hour + 12 - 7) % 12) / 12) * 100}%` : "-20%"}
+      opacity={isNightTime ? "100%" : "0%"}
+      transform="translateX(-50%)"
+      bgColor="gray"
+      boxShadow="0px 0px 10px black"
+      borderRadius="50%"
+      transition="0.5s all, 0.5s opacity"
+      overflow="hidden"
+    />
+  );
+};
+
 const WeatherBackground: FC<Props> = ({ hourData }) => {
   const [visibleToggle, setVisibleToggle] = useState(true);
 
@@ -120,7 +170,11 @@ const WeatherBackground: FC<Props> = ({ hourData }) => {
       <WeatherToggleGradient hourData={hourData} visible={visibleToggle} />
       <WeatherToggleGradient hourData={hourData} visible={!visibleToggle} />
       {hourData ? (
-        <CloudGroup cloudAreaFraction={hourData.instant.cloudAreaFraction} />
+        <>
+          <Sun hourData={hourData} />
+          <Moon hourData={hourData} />
+          <CloudGroup cloudAreaFraction={hourData.instant.cloudAreaFraction} />
+        </>
       ) : null}
     </Box>
   );

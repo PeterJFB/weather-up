@@ -5,6 +5,7 @@ import { Clothing, Preferences } from "../../types/clothing";
 import {
   extractClothingFromForm,
   getPreferences,
+  moveClothingPriority,
   updateClothing,
 } from "../../utils/clothing";
 import ClothingOption from "./ClothingOption";
@@ -25,11 +26,14 @@ const ClothingSelection: FC = () => {
   const editDisclosure = useDisclosure();
   const createDisclosure = useDisclosure();
 
-  const editClothing = (clothing: Clothing) => {
-    return () => {
-      setSelectedClothing(clothing);
-      editDisclosure.onOpen();
-    };
+  const editClothing = (clothing: Clothing) => () => {
+    setSelectedClothing(clothing);
+    editDisclosure.onOpen();
+  };
+
+  const moveClothing = (i: number) => (direction: "UP" | "DOWN") => {
+    moveClothingPriority(i, direction);
+    refreshClothingOptions();
   };
 
   const onEdit: ComponentProps<typeof CreateClothingModal>["onSave"] = (
@@ -62,11 +66,12 @@ const ClothingSelection: FC = () => {
         <PlusSquareIcon mr="10px" w="20px" h="20px" />{" "}
         <Text mb="-5px">Add clothing</Text>
       </Button>
-      {Object.keys(clothingOptions).map((name) => (
+      {clothingOptions.map((clothing, i) => (
         <ClothingOption
-          key={name}
-          clothing={clothingOptions[name]}
-          fireEdit={editClothing(clothingOptions[name])}
+          key={clothing.name}
+          clothing={clothing}
+          fireEdit={editClothing(clothing)}
+          move={moveClothing(i)}
         />
       ))}
       <EditClothingModal

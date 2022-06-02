@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren, useMemo } from "react";
 import { useEffect, useState } from "react";
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { fetchWeater, normalizeWeatherData } from "../../utils/weather";
 import { WeatherData, WeatherHourData } from "../../types/weather";
 import { getSuitableOutfit } from "../../core/WeatherUp";
@@ -8,7 +8,6 @@ import { ClothingType } from "../../types/clothing";
 import wData from "../../utils/local/fixture-raw.json";
 import WeatherBackground from "../WeatherBackground";
 import OutfitShowcase from "./OutfitShowcase";
-import { CLOTHING_MAP } from "./ClothingMap";
 import Loading from "../Loading";
 import Forecast from "../Forecast";
 
@@ -62,11 +61,11 @@ const WeatherDisplay: FC = () => {
     children,
     unit,
   }) => (
-    <Flex w="100%">
-      <Text w="55%" textAlign="end" mr="5px">
-        {children}
+    <Flex>
+      <Text textAlign="end" mr="5px" whiteSpace="nowrap">
+        -{children}
       </Text>
-      <Text w="45 %">{unit}</Text>
+      <Text>{unit}</Text>
     </Flex>
   );
 
@@ -76,6 +75,7 @@ const WeatherDisplay: FC = () => {
         w="full"
         flex={3}
         align="flex-end"
+        justifyContent="center"
         justify="space-between"
         pos="relative"
         overflowY="hidden"
@@ -84,44 +84,59 @@ const WeatherDisplay: FC = () => {
         <Loading isLoading={!weatherData} />
 
         {outfit ? (
-          <>
+          <Flex>
             <Flex
               direction="column"
               flex={1}
               bgColor="white"
               p="10px"
-              mb="150px"
-              transition="2s linear all"
-              borderRadius="0px 10px 10px 0px"
+              ml="10px"
+              minW="110px"
+              alignSelf="flex-start"
+              borderRadius="10px"
               backgroundBlendMode="multiply"
-              // bgGradient="linear(white, black)"
-              _hover={{ bgImage: "linear-gradient(black, black)" }}
-              bgImage="linear-gradient(white, black)"
+              align="center"
             >
-              <TextSegment unit="°C">
-                {hourData?.instant.airTemperature}
-              </TextSegment>
-              <TextSegment unit="m/s">
-                {hourData?.instant.windSpeed}
-              </TextSegment>
+              <Heading color="gray.400" size="m" textAlign="center">
+                {hourData?.time.getHours()}:00
+              </Heading>
+              <Flex>
+                <Text textAlign="right" mr="5px">
+                  {hourData?.instant.airTemperature} <br />
+                  {hourData?.instant.windSpeed} <br />
+                  {hourData?.next1Hours?.percipitationAmount}
+                </Text>
+                <Text>
+                  °C <br />
+                  m/s <br />
+                  mm <br />
+                </Text>
+              </Flex>
             </Flex>
             <OutfitShowcase outfit={outfit} />
             <Flex
               flex={1}
+              alignSelf="flex-start"
               direction="column"
               bgColor="white"
+              minW="110px"
               p="10px"
-              mb="100px"
-              borderRadius="10px 0px 0px 10px"
+              mr="10px"
+              borderRadius="10px"
             >
-              {(Object.keys(ClothingType) as (keyof typeof ClothingType)[]).map(
-                (c) => {
-                  if (!outfit[c]) return null;
-                  return <Text key={c}>{CLOTHING_MAP[c].name}</Text>;
-                }
-              )}
+              <Heading color="gray.400" size="m" textAlign="center">
+                Clothing:
+              </Heading>
+              {Object.values(outfit).some((v) => v !== undefined)
+                ? (
+                    Object.keys(ClothingType) as (keyof typeof ClothingType)[]
+                  ).map((c) => {
+                    if (!outfit[c]) return null;
+                    return <Text key={c}>{outfit[c]?.name}</Text>;
+                  })
+                : "Ummm none"}
             </Flex>
-          </>
+          </Flex>
         ) : null}
       </Flex>
       <Flex

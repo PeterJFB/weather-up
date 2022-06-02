@@ -1,6 +1,12 @@
 import { Box, Image } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import React, { FC, TransitionEventHandler, useEffect, useState } from "react";
+import React, {
+  FC,
+  TransitionEvent,
+  TransitionEventHandler,
+  useEffect,
+  useState,
+} from "react";
 import { WeatherHourData } from "../../types/weather";
 
 const hover = keyframes`
@@ -11,9 +17,11 @@ const hover = keyframes`
 const Cloud = ({
   onTransitionEnd,
   position,
+  visible = true,
 }: {
   onTransitionEnd?: TransitionEventHandler<HTMLDivElement>;
   position: string[] | undefined;
+  visible: boolean;
 }) => (
   <Image
     pos="absolute"
@@ -24,10 +32,14 @@ const Cloud = ({
     h="100px"
     transition="0.5s opacity, 0.5s margin"
     transform="translateX(-50%) scale(300%)"
-    opacity={position ? "100%" : "0%"}
+    opacity={position && visible ? "100%" : "0%"}
     animation={position?.length ? `${hover} infinite 2s alternate` : undefined}
     filter="drop-shadow(0 3px 2px rgba(0, 0, 0, 0.4))"
-    onTransitionEnd={onTransitionEnd}
+    onTransitionEnd={(e: TransitionEvent<HTMLDivElement>) => {
+      if (!e.currentTarget.style.textAlign && onTransitionEnd)
+        onTransitionEnd(e);
+      e.currentTarget.style.textAlign = "center";
+    }}
   />
 );
 
@@ -42,10 +54,6 @@ const CloudGroup: FC<Props> = ({ cloudAreaFraction }) => {
     undefined,
   ]);
 
-  if (cloudAreaFraction < 30) {
-    return null;
-  }
-
   const showCloud = (index: number) => () => {
     const c = [...clouds];
     c[index] = [`${Math.random() * 100}%`, `${Math.random() * 60 + 30}px`];
@@ -58,11 +66,17 @@ const CloudGroup: FC<Props> = ({ cloudAreaFraction }) => {
 
   return (
     <Box pos="relative">
-      <Cloud position={clouds[0]} onTransitionEnd={showCloud(1)} />
-      {cloudAreaFraction >= 60 && (
-        <Cloud position={clouds[1]} onTransitionEnd={showCloud(2)} />
-      )}
-      {cloudAreaFraction >= 80 && <Cloud position={clouds[2]} />}
+      <Cloud
+        visible={cloudAreaFraction >= 20}
+        position={clouds[0]}
+        onTransitionEnd={showCloud(1)}
+      />
+      <Cloud
+        visible={cloudAreaFraction >= 60}
+        position={clouds[1]}
+        onTransitionEnd={showCloud(2)}
+      />
+      <Cloud visible={cloudAreaFraction >= 80} position={clouds[2]} />
     </Box>
   );
 };
