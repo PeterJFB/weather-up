@@ -60,6 +60,20 @@ export type WeatherHourData = {
   next6Hours?: WeatherSpanData;
 };
 
+export type SavedWeatherHourData = {
+  time: string;
+  instant: {
+    airPressureAtSeaLevel: number;
+    airTemperature: number;
+    cloudAreaFraction: number;
+    windFromDirection: number;
+    windSpeed: number;
+  };
+  next1Hours?: WeatherSpanData;
+  next6Hours?: WeatherSpanData;
+};
+
+
 export type WeatherSpanData = {
   symbolCode?: SymbolCode;
   percipitationAmount?: number;

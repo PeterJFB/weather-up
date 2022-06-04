@@ -1,5 +1,6 @@
 import {
   RawWeatherResponse,
+  SavedWeatherHourData,
   SymbolCode,
   WeatherData,
   WeatherHourData,
@@ -138,5 +139,11 @@ const getSavedWeatherData = () => {
 
   if (!weatherData) return null;
 
-  return JSON.parse(weatherData) as WeatherData;
+  const parsedData = JSON.parse(weatherData);
+
+  parsedData.byHour = parsedData.byHour.map((hourData: SavedWeatherHourData) => {
+    return { ...hourData, time: new Date(hourData.time) };
+  })
+
+  return parsedData as WeatherData;
 };
