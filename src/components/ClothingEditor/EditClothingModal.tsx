@@ -1,4 +1,5 @@
 import {
+  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -16,12 +17,14 @@ type Props = {
   selectedClothing?: Clothing;
   disclosure: UseDisclosureProps;
   onSave: Parameters<typeof generateClothingForm>[0];
+  onDelete: (clothing: Clothing) => void;
 };
 
 const EditClothingModal: FC<Props> = ({
   selectedClothing,
   disclosure,
   onSave,
+  onDelete,
 }) => {
   const { isOpen, onClose } = useDisclosure(disclosure);
 
@@ -49,7 +52,19 @@ const EditClothingModal: FC<Props> = ({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{name}</ModalHeader>
+        <ModalHeader>
+          {name}{" "}
+          <Button
+            size={"xs"}
+            color="white"
+            bgColor="red.500"
+            onClick={() => {
+              onDelete(selectedClothing);
+            }}
+          >
+            Delete
+          </Button>
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <EditClothingForm clothingOptions={{}} clothing={selectedClothing} />

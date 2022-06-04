@@ -3,6 +3,7 @@ import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import React, { ComponentProps, FC, useState } from "react";
 import { Clothing, Preferences } from "../../types/clothing";
 import {
+  deleteClothing,
   extractClothingFromForm,
   getPreferences,
   moveClothingPriority,
@@ -36,7 +37,7 @@ const ClothingSelection: FC = () => {
     refreshClothingOptions();
   };
 
-  const onEdit: ComponentProps<typeof CreateClothingModal>["onSave"] = (
+  const onEdit: ComponentProps<typeof EditClothingModal>["onSave"] = (
     values
   ) => {
     const clothing = extractClothingFromForm(values);
@@ -51,6 +52,14 @@ const ClothingSelection: FC = () => {
     const clothing = extractClothingFromForm(values);
     updateClothing(clothing);
     createDisclosure.onClose();
+    refreshClothingOptions();
+  };
+
+  const onDelete: ComponentProps<typeof EditClothingModal>["onDelete"] = (
+    clothing
+  ) => {
+    deleteClothing(clothing);
+    editDisclosure.onClose();
     refreshClothingOptions();
   };
 
@@ -78,6 +87,7 @@ const ClothingSelection: FC = () => {
         disclosure={editDisclosure}
         selectedClothing={selectedClothing}
         onSave={onEdit}
+        onDelete={onDelete}
       />
       <CreateClothingModal disclosure={createDisclosure} onSave={onCreate} />
     </Flex>

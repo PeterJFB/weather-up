@@ -50,10 +50,22 @@ export const updateClothing = (
 
   // Prevent override of existing clothing
 
-  if (prevClothing?.name !== newClothing.name) {
-    for (const clothing of preferences.clothingOptions)
-      if (clothing.name === newClothing.name) return null;
+  if (prevClothing) {
+    if (prevClothing.name !== newClothing.name) {
+      for (const clothing of preferences.clothingOptions)
+        if (clothing.name === newClothing.name) return null;
+    }
+    for (let i = 0; i < preferences.clothingOptions.length; i++) {
+      if (preferences.clothingOptions[i].name === prevClothing.name) {
+        preferences.clothingOptions[i] = newClothing;
+        savePreferences(preferences);
+        return preferences.clothingOptions;
+      }
+    }
   }
+
+  for (const clothing of preferences.clothingOptions)
+    if (clothing.name === newClothing.name) return null;
 
   preferences.clothingOptions.unshift(newClothing);
 
@@ -87,4 +99,17 @@ export const moveClothingPriority = (i: number, direction: "UP" | "DOWN") => {
     );
   }
   savePreferences(preferences);
+};
+
+export const deleteClothing = (clothing: Clothing) => {
+  const preferences = getPreferences();
+
+  for (let i = 0; i < preferences.clothingOptions.length; i++) {
+    if (preferences.clothingOptions[i].name === clothing.name) {
+      const deleted = preferences.clothingOptions.splice(i, 1);
+      savePreferences(preferences);
+      return deleted;
+    }
+  }
+  return null;
 };

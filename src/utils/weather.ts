@@ -141,9 +141,11 @@ const getSavedWeatherData = () => {
 
   const parsedData = JSON.parse(weatherData);
 
-  parsedData.byHour = parsedData.byHour.map((hourData: SavedWeatherHourData) => {
-    return { ...hourData, time: new Date(hourData.time) };
-  })
+  parsedData.byHour = parsedData.byHour.map(
+    (hourData: SavedWeatherHourData) => {
+      return { ...hourData, time: new Date(hourData.time) };
+    }
+  );
 
   return parsedData as WeatherData;
 };
