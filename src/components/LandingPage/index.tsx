@@ -1,11 +1,11 @@
-import React, { FC, PropsWithChildren, useMemo } from "react";
+import React, { FC, useMemo } from "react";
 import { useEffect, useState } from "react";
 import { Flex, Heading, Text } from "@chakra-ui/react";
-import { fetchWeater, normalizeWeatherData } from "../../utils/weather";
+import { fetchWeater } from "../../utils/weather";
 import { WeatherData, WeatherHourData } from "../../types/weather";
 import { getSuitableOutfit } from "../../core/WeatherUp";
 import { ClothingType } from "../../types/clothing";
-import wData from "../../utils/local/fixture-raw.json";
+// import wData from "../../utils/local/fixture-raw.json";
 import WeatherBackground from "../WeatherBackground";
 import OutfitShowcase from "./OutfitShowcase";
 import Loading from "../Loading";
@@ -25,29 +25,29 @@ const WeatherDisplay: FC = () => {
   );
 
   useEffect(() => {
-    // navigator.geolocation.getCurrentPosition(
-    //   (position) => {
-    //     const { latitude, longitude } = position.coords;
-    //     (async () => {
-    //       // const { error, data } = await fetchWeater(latitude, longitude);
-    //       // if (!error && data) {
-    //       //   setWeatherData(data);
-    //       // }
-    setTimeout(() => {
-      setWeatherData(
-        normalizeWeatherData(wData, new Headers(), "40.333", "23.403")
-      );
-    }, 1000);
-    //     })();
-    //   },
-    //   (error) => {
-    //     if (error.PERMISSION_DENIED) {
-    //       setHasGeolocationPermission(false);
-    //     } else {
-    //       console.error("GeolocationError: ", error);
-    //     }
-    //   }
-    // );
+    // setTimeout(() => {
+    //   setWeatherData(
+    //     normalizeWeatherData(wData, new Headers(), "40.333", "23.403")
+    //   );
+    // }, 1000);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        (async () => {
+          const { error, data } = await fetchWeater(latitude, longitude);
+          if (!error && data) {
+            setWeatherData(data);
+          }
+        })();
+      },
+      (error) => {
+        if (error.PERMISSION_DENIED) {
+          setHasGeolocationPermission(false);
+        } else {
+          console.error("GeolocationError: ", error);
+        }
+      }
+    );
   }, []);
 
   useEffect(() => {
@@ -56,18 +56,6 @@ const WeatherDisplay: FC = () => {
 
   if (!hasGeolocationPermission)
     return <Flex>GIMMIE ACCESS TO YOUR LOCATION PLEASE</Flex>;
-
-  const TextSegment: FC<PropsWithChildren<{ unit: string }>> = ({
-    children,
-    unit,
-  }) => (
-    <Flex>
-      <Text textAlign="end" mr="5px" whiteSpace="nowrap">
-        -{children}
-      </Text>
-      <Text>{unit}</Text>
-    </Flex>
-  );
 
   return (
     <Flex flex={1} h="full" pos="relative" direction="column">
